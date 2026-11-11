@@ -162,9 +162,9 @@
       },
       {
         id: 'ATS-01.11', phase: 1, title: 'Integrate the selected ATS-05 logo into the preview', status: 'Done', priority: 'High',
-        dependencies: ['ATS-01.6', 'ATS-01.7'], evidence: 'PROJECT_STATUS.md records the ATS-05 selection. The earlier standalone preview used the 1254 × 1254 PNG. The active app uses the derived ATS-05-mark.jpg in its header, and the fresh build bundles that JPEG.',
-        scope: 'Show the selected ATS-05 concept in the active local React preview.',
-        criteria: ['The active React app displays ATS-05 branding.', 'The Vite build bundles the active logo asset.'],
+        dependencies: ['ATS-01.6', 'ATS-01.7'], evidence: 'PROJECT_STATUS.md records the ATS-05 selection. The earlier standalone preview used the 1254 × 1254 PNG. The app uses ATS-05-mark.jpg in its header. Both production builds reference and package the 32 × 32 ATS-05 PNG at /favicon.png. Check the browser tab on each hosted preview after deployment.',
+        scope: 'Show the selected ATS-05 logo in the site header and browser tab.',
+        criteria: ['The active React app displays ATS-05 branding.', 'Both production builds include the linked favicon.'],
       },
       {
         id: 'ATS-01.12', phase: 1, title: 'Prepare Vercel and Netlify preview configuration', status: 'Done', priority: 'Normal',
