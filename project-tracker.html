@@ -168,7 +168,7 @@
       },
       {
         id: 'ATS-01.12', phase: 1, title: 'Prepare Vercel and Netlify preview configuration', status: 'Done', priority: 'Normal',
-        dependencies: ['ATS-01.7'], evidence: 'vercel.json and netlify.toml configure the Vite build and dist output. .nvmrc specifies Node 24. DEPLOYMENT.md documents both preview deployment workflows.',
+        dependencies: ['ATS-01.7'], evidence: 'Both branches use the same Vercel and Netlify settings, Vite build, dist output, and Node 24. Local production builds passed. DEPLOYMENT.md includes Replit GitHub and ZIP import instructions.',
         scope: 'Prepare the current multi-theme prototype for deployment from a local checkout.',
         criteria: ['Both host configuration files target the Vite build output.', 'The deployment guide records the local checks and preview commands.'],
       },
@@ -179,20 +179,20 @@
         criteria: ['Export a standalone SVG matching the selected concept.', 'Verify legibility at favicon and header sizes on light and dark surfaces.', 'Record the approved export.'],
       },
       {
-        id: 'ATS-01.9', phase: 1, title: 'Commit and verify the GitHub baseline', status: 'Backlog', priority: 'High',
-        dependencies: ['ATS-01.6', 'ATS-01.7', 'ATS-01.8'], evidence: 'The local baseline on feature/multi-theme-prototype includes the current portal, gallery assets, and hosting configuration. Verification on GitHub is pending.',
+        id: 'ATS-01.9', phase: 1, title: 'Commit and verify the GitHub baseline', status: 'In progress', priority: 'High',
+        dependencies: ['ATS-01.6', 'ATS-01.7', 'ATS-01.8'], evidence: 'The local multi-theme baseline is 663fb75 and the separate woodland commit is 02c0108. GitHub reported zero remote branches on November 10, 2026. Publishing both refs and verifying their SHAs remain open.',
         scope: 'Capture the current source and planning files in a reproducible Git baseline.',
         criteria: ['Review the files to include and create the first commit.', 'Verify the branch and commit on GitHub and record the commit link.'],
       },
       {
         id: 'ATS-01.10', phase: 1, title: 'Build and test the three prototype themes locally', status: 'In review', priority: 'High',
-        dependencies: ['ATS-01.11'], evidence: 'The continuous portal has seven section links, a scroll-driven squirrel, and a cropped original About photo. Services now has ten detailed popups, 21 article previews, and relevant gallery photos. Chrome verified the mobile popup layout, focus return, source links, all estimator handoffs, and the emergency call action. The Maps overlay remains paused.',
+        dependencies: ['ATS-01.11'], evidence: 'Both production builds fit 320, 390, 768, 1024, and 1440 CSS pixels in Chromium. At 390px all seven links, unit help, annual plan, and an FAQ worked. Rugged Pro, Emergency Rapid, five Eco-Clean scenes, and woodland Light, Dark, and System worked. Multi-theme navigation scrolls sideways at narrow widths. Live Google review controls, physical-device checks, and live lead and photo submission remain open. The woodland branch has additional evidence in design-qa.md.',
         scope: 'Implement Rugged Pro, Eco-Clean, and Emergency with a working theme selector and a primary contact action.',
         criteria: ['Switch themes and Eco-Clean scenes in the local preview.', 'Check the continuous layout, seven section links, and primary contact action on mobile and desktop.', 'Verify the coverage diagram and enhancements watermark while Maps is paused.', 'Confirm billing terms and business claims before presenting them as approved.'],
       },
       {
         id: 'ATS-01.4', phase: 1, title: 'Deploy the three-theme React prototype', status: 'Backlog', priority: 'High',
-        dependencies: ['ATS-01.10', 'ATS-01.12'], evidence: 'A fresh production build passed for the continuous-page portal. Vercel and Netlify target the build output. A hosted URL for the demo has yet to be verified.',
+        dependencies: ['ATS-01.10', 'ATS-01.12'], evidence: 'Both local production builds passed. The Replit search found no matching app. DEPLOYMENT.md documents separate imports and Static publishing with dist. Import, publish, and verify each client URL.',
         scope: 'Publish a shareable demo with Rugged Pro, Eco-Clean, and Emergency themes.',
         criteria: ['Record the deployed build and a working preview URL.', 'Verify theme switching and the primary contact action on the hosted preview.'],
       },
