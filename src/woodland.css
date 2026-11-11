@@ -1,6 +1,5 @@
-body {
-  background: #101210;
-}
+:root { color-scheme: light dark; }
+body { background: light-dark(#f6f5eb, #101210); }
 
 .woodland {
   --bg: #101210;
@@ -11,17 +10,76 @@ body {
   --accent-ink: #172014;
   --line: #414b40;
   --field: #111611;
+  --header: #101510;
+  --menu: #151c15;
+  --storm-bg: #1f271d;
+  --storm-ink: #e6efdb;
+  --strip: #202b21;
+  --estimate: #141b15;
+  --hero-bg: #0b100c;
+  --hero-wash: linear-gradient(90deg, #0d120ce8 0%, #0d120c9c 30%, transparent 71%),
+    linear-gradient(0deg, #101210 0%, #10121000 24%);
+  --hero-wash-mobile: linear-gradient(180deg, #0b100cdd, #0b100cbf 42%, #0b100c28 74%, #101210 100%);
+  --hero-description: #e0e6dc;
+  --hero-caption: #d8e0d3;
+  --hero-secondary: #101610c4;
+  --hero-secondary-line: #a6b3a2;
+  --contact-wash: linear-gradient(#101210, #10121030 47%, #101210);
+  --about-photo-treatment: brightness(.82) saturate(.77);
+  --service-photo-treatment: saturate(.82) brightness(.76);
+  --service-photo-wash: linear-gradient(0deg, #080c08f5, #080c08c9 24%, #080c0800 69%);
+  --service-photo-copy: #e3e7df;
+  --scroll-thumb: #5c6d59;
+  --scroll-track: #141914;
   --display: 'DM Sans', system-ui, sans-serif;
   --italic: Georgia, 'Times New Roman', serif;
 }
+
+.woodland[data-appearance='light'] {
+  color-scheme: light;
+  --bg: #f6f5eb;
+  --panel: #fffdf4;
+  --ink: #1e2b1e;
+  --muted: #495648;
+  --accent: #305e36;
+  --accent-ink: #fffdf4;
+  --line: #9fae98;
+  --field: #fffef8;
+  --danger: #9c2c23;
+  --header: #faf8ef;
+  --menu: #faf8ef;
+  --storm-bg: #e2e8d5;
+  --storm-ink: #304431;
+  --strip: #e8eddc;
+  --estimate: #edf0e2;
+  --hero-bg: #f6f5eb;
+  --hero-wash: linear-gradient(90deg, #f6f5eb 0%, #f6f5ebf5 25%, #f6f5eb9e 45%, transparent 72%),
+    linear-gradient(0deg, #f6f5eb 0%, #f6f5eb00 25%);
+  --hero-wash-mobile: linear-gradient(180deg, #f6f5ebf7, #f6f5ebe0 42%, #f6f5eb1a 73%, #f6f5eb 100%);
+  --hero-description: #304132;
+  --hero-caption: #304132;
+  --hero-secondary: #fffdf4bf;
+  --hero-secondary-line: #657964;
+  --contact-wash: linear-gradient(#f6f5eb, #f6f5ebd4 47%, #f6f5eb);
+  --about-photo-treatment: none;
+  --service-photo-treatment: none;
+  --service-photo-wash: linear-gradient(0deg, #fffdf4fa, #fffdf4e8 29%, #fffdf400 73%);
+  --service-photo-copy: #354535;
+  --scroll-thumb: #667e65;
+  --scroll-track: #e8eddc;
+}
+
+:root:has(.woodland[data-appearance='light']) { color-scheme: light; }
+:root:has(.woodland[data-appearance='dark']) { color-scheme: dark; }
 
 .woodland .shell { width: min(100% - clamp(2.5rem, 11vw, 10rem), 77rem); }
 .woodland .skip-link { position: fixed; z-index: 10; top: .5rem; left: .75rem; padding: .65rem 1rem; background: var(--accent); color: var(--accent-ink); }
 .woodland .skip-link:not(:focus) { clip-path: inset(50%); }
 
-.woodland .storm-banner { background: #1f271d; color: #e6efdb; }
+.woodland .storm-banner { background: var(--storm-bg); color: var(--storm-ink); }
+.woodland .storm-inner a:focus-visible { outline-color: currentColor; }
 .woodland .storm-inner { padding-block: .38rem; font-size: .75rem; }
-.woodland .site-header { background: #101510; }
+.woodland .site-header { background: var(--header); }
 .woodland .header-inner { min-height: 4.35rem; gap: 1rem; }
 .woodland .brand { flex: none; gap: .6rem; font-size: .87rem; letter-spacing: -.02em; }
 .woodland .brand img { border-radius: 50%; }
@@ -29,6 +87,19 @@ body {
 .woodland .desktop-nav { width: auto; margin-inline: auto; overflow: visible; gap: clamp(.05rem, .45vw, .45rem); }
 .woodland .page-nav a { padding: .5rem .32rem; font-size: .78rem; font-weight: 600; }
 .woodland .mobile-nav { display: none; }
+.woodland .appearance-select {
+  flex: none;
+  min-height: 2.25rem;
+  appearance: auto;
+  padding: .3rem .5rem;
+  border: 1px solid var(--line);
+  border-radius: 2rem;
+  background: var(--field);
+  color: var(--ink);
+  font-size: .78rem;
+  font-weight: 700;
+  cursor: pointer;
+}
 
 .woodland .hero {
   position: relative;
@@ -36,7 +107,7 @@ body {
   min-height: clamp(37rem, 76svh, 54rem);
   padding: 0;
   isolation: isolate;
-  background: #0b100c;
+  background: var(--hero-bg);
 }
 
 .woodland-hero-image { position: absolute; z-index: -1; inset: 0; overflow: hidden; }
@@ -45,8 +116,7 @@ body {
   content: '';
   position: absolute;
   inset: 0;
-  background: linear-gradient(90deg, #0d120ce8 0%, #0d120c9c 30%, transparent 71%),
-    linear-gradient(0deg, #101210 0%, #10121000 24%);
+  background: var(--hero-wash);
 }
 
 .woodland-hero-inner {
@@ -76,11 +146,11 @@ body {
   letter-spacing: -.065em;
 }
 
-.woodland .hero-description { max-width: 29rem; color: #e0e6dc; line-height: 1.55; }
-.woodland-caption { position: absolute; right: 0; bottom: 1.45rem; color: #d8e0d3; font-size: .8rem; }
+.woodland .hero-description { max-width: 29rem; color: var(--hero-description); line-height: 1.55; }
+.woodland-caption { position: absolute; right: 0; bottom: 1.45rem; color: var(--hero-caption); font-size: .8rem; }
 .woodland .button { min-height: 2.85rem; padding-inline: 1.1rem; border-radius: 2rem; font-size: .87rem; }
 .woodland .button.primary { border-color: var(--accent); }
-.woodland .hero .button.secondary { background: #101610c4; border-color: #a6b3a2; }
+.woodland .hero .button.secondary { background: var(--hero-secondary); border-color: var(--hero-secondary-line); }
 .woodland-text-link { align-self: center; padding: .45rem; color: var(--ink); font-size: .87rem; font-weight: 700; text-decoration: underline; text-underline-offset: .3em; }
 .woodland-text-link span { margin-left: .2rem; }
 
@@ -103,7 +173,7 @@ body {
 .woodland-about-columns { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.3fr) minmax(0, 1fr); gap: clamp(.85rem, 2.3vw, 2rem); align-items: center; }
 .woodland-about-columns .info-card { margin: 0; border: 0; padding: 1rem .5rem; text-align: left; background: none; }
 .woodland .woodland-about-feature { padding: 0 0 1rem; }
-.woodland-about-feature img { width: 100%; aspect-ratio: 2.35; height: auto; border-radius: .75rem; object-fit: cover; object-position: center 38%; margin-bottom: 1rem; filter: brightness(.82) saturate(.77); }
+.woodland-about-feature img { width: 100%; aspect-ratio: 2.35; height: auto; border-radius: .75rem; object-fit: cover; object-position: center 38%; margin-bottom: 1rem; filter: var(--about-photo-treatment); }
 .woodland-about-columns h3 { font-size: clamp(1.2rem, 2.2vw, 1.65rem); line-height: 1.12; font-weight: 600; letter-spacing: -.035em; }
 .woodland-team { display: grid; grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr); align-items: center; gap: clamp(1rem, 4vw, 4rem); margin-top: 3rem; text-align: left; }
 .woodland-team .about-photo { border-radius: .75rem; }
@@ -115,16 +185,17 @@ body {
 .woodland .service-guide:focus-within { outline: 2px solid var(--accent); outline-offset: 2px; }
 .woodland .service-guide:nth-child(2) { grid-column: 1 / -1; min-height: 0; }
 .woodland .service-guide:has(.service-cover) { grid-column: 1 / -1; min-height: clamp(18rem, 35vw, 31rem); }
-.woodland .service-cover { position: absolute; z-index: -2; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center 45%; filter: saturate(.82) brightness(.76); }
-.woodland .service-guide:has(.service-cover)::before { content: ''; position: absolute; inset: 0; z-index: -1; background: linear-gradient(0deg, #080c08f5, #080c08c9 24%, #080c0800 69%); }
+.woodland .service-cover { position: absolute; z-index: -2; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center 45%; filter: var(--service-photo-treatment); }
+.woodland .service-guide:has(.service-cover)::before { content: ''; position: absolute; inset: 0; z-index: -1; background: var(--service-photo-wash); }
 .woodland .service-guide-copy { width: 100%; padding: clamp(1rem, 3vw, 2rem); }
 .woodland .service-guide h3 { font-size: clamp(1.2rem, 2.8vw, 1.9rem); letter-spacing: -.035em; line-height: 1.13; font-weight: 650; }
-.woodland .service-guide p { margin-block: .5rem .15rem; color: #e3e7df; }
+.woodland .service-guide p { margin-block: .5rem .15rem; color: var(--muted); }
+.woodland .service-guide:has(.service-cover) p { color: var(--service-photo-copy); }
 .woodland .service-open { margin: 0; }
 
-.woodland .service-strip { color: var(--ink); background: #202b21; border-block: 1px solid var(--line); }
+.woodland .service-strip { color: var(--ink); background: var(--strip); border-block: 1px solid var(--line); }
 .woodland .service-strip .ticker-toggle:focus-visible { outline-color: var(--accent); }
-.woodland .estimate-section { background: #141b15; border-block: 1px solid var(--line); }
+.woodland .estimate-section { background: var(--estimate); border-block: 1px solid var(--line); }
 .woodland .estimate-layout { gap: clamp(1.5rem, 5vw, 5rem); }
 .woodland .estimate-form, .woodland .info-card, .woodland .coverage-map { border-radius: .75rem; }
 
@@ -132,13 +203,13 @@ body {
 .woodland .gallery-heading { justify-content: center; flex-direction: column; text-align: center; }
 .woodland .gallery-heading h3 { font-size: clamp(2rem, 5vw, 3.9rem); line-height: 1.12; font-weight: 550; letter-spacing: -.06em; }
 .woodland .gallery-heading > span { color: var(--muted); font-size: .85rem; }
-.woodland .gallery-stack { gap: 1rem; padding-inline: .35rem; scroll-padding-inline: .35rem; scrollbar-color: #5c6d59 #141914; }
+.woodland .gallery-stack { gap: 1rem; padding-inline: .35rem; scroll-padding-inline: .35rem; scrollbar-color: var(--scroll-thumb) var(--scroll-track); }
 .woodland .gallery-card { flex-basis: min(17rem, 72vw); margin-left: 0; padding: 0; background: transparent; border: 0; border-radius: .65rem; }
 .woodland .gallery-card img { aspect-ratio: 5 / 4; border-radius: .65rem; }
 .woodland .gallery-card span { color: var(--muted); padding-top: .55rem; }
 .woodland .gallery > .gallery-controls { justify-content: center; margin-top: 1rem; }
 
-.woodland .woodland-contact { text-align: center; padding-block: clamp(3.75rem, 9vw, 8rem); background: linear-gradient(#101210, #10121030 47%, #101210), url('./assets/woodland-at-dusk-small.webp') 69% 67% / cover; }
+.woodland .woodland-contact { text-align: center; padding-block: clamp(3.75rem, 9vw, 8rem); background: var(--contact-wash), var(--contact-image) 69% 67% / cover; }
 .woodland-contact-title { margin-bottom: 1.3rem; color: var(--ink); font-size: clamp(2.5rem, 6vw, 5.25rem); font-weight: 550; line-height: 1; letter-spacing: -.065em; }
 .woodland #faqs { max-width: 48rem; text-align: center; }
 .woodland .faq-list { gap: 0; margin-top: 2.1rem; text-align: left; border-top: 1px solid var(--line); }
@@ -165,22 +236,24 @@ body {
   }
 }
 
-@media (max-width: 71rem) {
+@media (max-width: 79rem) {
   .woodland .header-inner { display: flex; padding-block: .5rem; }
   .woodland .desktop-nav { display: none; }
   .woodland .header-phone { margin-left: auto; }
   .woodland .mobile-nav { display: block; }
   .woodland .mobile-nav summary { list-style: none; cursor: pointer; padding: .5rem .85rem; border: 1px solid var(--line); border-radius: 2rem; font-size: .83rem; font-weight: 700; }
   .woodland .mobile-nav summary::-webkit-details-marker { display: none; }
-  .woodland .mobile-nav .page-nav { position: absolute; inset: 100% 0 auto; display: grid; width: 100%; background: #151c15; padding: .6rem max(1.25rem, 5.5vw) 1rem; border-bottom: 1px solid var(--line); box-shadow: 0 1.4rem 2rem #0006; max-height: 70dvh; overflow-y: auto; }
+  .woodland .mobile-nav .page-nav { position: absolute; inset: 100% 0 auto; display: grid; width: 100%; background: var(--menu); padding: .6rem max(1.25rem, 5.5vw) 1rem; border-bottom: 1px solid var(--line); box-shadow: 0 1.4rem 2rem #0006; max-height: 70dvh; overflow-y: auto; }
   .woodland .mobile-nav a { padding-block: .66rem; }
 }
 
 @media (max-width: 47rem) {
+  .woodland .header-phone { display: none; }
+  .woodland .appearance-select { margin-left: auto; }
   .woodland .hero { min-height: max(34rem, 76svh); }
   .woodland-hero-inner { align-content: start; padding-block: 3.65rem 4.75rem; }
   .woodland-hero-image img { object-position: 75% center; }
-  .woodland-hero-image::after { background: linear-gradient(180deg, #0b100cdd, #0b100cbf 42%, #0b100c28 74%, #101210 100%); }
+  .woodland-hero-image::after { background: var(--hero-wash-mobile); }
   .woodland .hero h1 { font-size: clamp(3.2rem, 12.6vw, 5.6rem); }
   .woodland .hero-description { max-width: 28ch; font-size: 1rem; }
   .woodland .hero .actions { column-gap: .55rem; row-gap: .55rem; margin-top: 1.3rem; }
@@ -203,6 +276,5 @@ body {
   .woodland .header-inner { gap: .55rem; }
   .woodland .brand { font-size: .72rem; gap: .38rem; }
   .woodland .header-inner .brand img { width: 2.1rem; height: 2.1rem; }
-  .woodland .header-phone { font-size: .72rem; }
   .woodland .mobile-nav summary { padding-inline: .6rem; font-size: .75rem; }
 }

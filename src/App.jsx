@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, useSyncExternalStore } from 'react';
 import logo from './assets/ATS-05-mark.jpg';
 import heroPhoto from './assets/arborist.jpg';
 import { themes } from './themes/siteThemes.js';
@@ -8,6 +8,8 @@ import PortalReviews from './PortalReviews.jsx';
 import { Claims, Faqs, Services, serviceCatalog } from './PortalSections.jsx';
 import woodland from './assets/woodland-at-dusk.webp';
 import woodlandSmall from './assets/woodland-at-dusk-small.webp';
+import woodlandDaylight from './assets/woodland-in-sunlight.webp';
+import woodlandDaylightSmall from './assets/woodland-in-sunlight-small.webp';
 import aboutPhoto from '../img_ref/Abt_us_needs_Cleaning.png';
 
 // Company contact and service area: https://www.byebyetree.com/contact
@@ -276,7 +278,35 @@ function EstimateForm({ service, setService }) {
   );
 }
 
+const appearanceKey = 'ats-woodland-appearance';
+const systemDark = window.matchMedia('(prefers-color-scheme: dark)');
+
+function readAppearance() {
+  try {
+    const saved = window.localStorage.getItem(appearanceKey);
+    if (saved === 'light' || saved === 'dark') return saved;
+  } catch {
+    // Private or restricted browser contexts can still switch themes for this visit.
+  }
+  return 'system';
+}
+
+function subscribeToSystemAppearance(onChange) {
+  systemDark.addEventListener('change', onChange);
+  return () => systemDark.removeEventListener('change', onChange);
+}
+
+function getSystemAppearance() {
+  return systemDark.matches ? 'dark' : 'light';
+}
+
 export default function App() {
+  const [appearance, setAppearance] = useState(readAppearance);
+  const systemAppearance = useSyncExternalStore(subscribeToSystemAppearance, getSystemAppearance);
+  const resolvedAppearance = appearance === 'system' ? systemAppearance : appearance;
+  const isLight = resolvedAppearance === 'light';
+  const heroImage = isLight ? woodlandDaylight : woodland;
+  const heroImageSmall = isLight ? woodlandDaylightSmall : woodlandSmall;
   const [service, setService] = useState('');
   const [currentSection, setCurrentSection] = useState('home');
   const navigation = useRef(null);
@@ -305,13 +335,23 @@ export default function App() {
     };
   }, []);
 
+  function changeAppearance(event) {
+    const next = event.target.value;
+    setAppearance(next);
+    try {
+      window.localStorage.setItem(appearanceKey, next);
+    } catch {
+      // The selection still applies to this page when storage is unavailable.
+    }
+  }
+
   const sectionLinks = () => sections.map(([id, label]) => (
     <a key={id} href={`#${id}`} aria-current={currentSection === id ? 'location' : undefined}
       onClick={() => { mobileMenu.current.open = false; }}>{label}</a>
   ));
 
   return (
-    <div className="site portal woodland" data-theme="woodland">
+    <div className="site portal woodland" data-theme="woodland" data-appearance={resolvedAppearance}>
       <a className="skip-link" href="#top">Skip to content</a>
       <StormBanner emergency={emergency} />
       <header className="site-header section-navigation" ref={navigation}>
@@ -322,6 +362,11 @@ export default function App() {
           </a>
           <nav className="page-nav desktop-nav" aria-label="Jump to section">{sectionLinks()}</nav>
           <PhoneLink phone={office} className="header-phone" />
+          <select className="appearance-select" aria-label="Color theme" value={appearance} onChange={changeAppearance}>
+            <option value="light">Light</option>
+            <option value="dark">Dark</option>
+            <option value="system">System</option>
+          </select>
           <details ref={mobileMenu} className="mobile-nav" onKeyDown={(event) => {
             if (event.key === 'Escape' && event.currentTarget.open) {
               event.currentTarget.open = false;
@@ -336,8 +381,8 @@ export default function App() {
       <main id="top" tabIndex={-1}>
         <section id="home" className="hero" aria-labelledby="hero-title">
           <picture className="woodland-hero-image" aria-hidden="true">
-            <source media="(max-width: 47rem)" srcSet={woodlandSmall} />
-            <img src={woodland} alt="" width="1536" height="1024" fetchPriority="high" />
+            <source media="(max-width: 47rem)" srcSet={heroImageSmall} />
+            <img src={heroImage} alt="" width="1536" height="1024" fetchPriority="high" />
           </picture>
           <div className="shell woodland-hero-inner">
             <div className="hero-copy">
@@ -402,7 +447,7 @@ export default function App() {
         </section>
         <PortalReviews />
         <Claims office={office} emergency={emergency} />
-        <div className="woodland-contact">
+        <div className="woodland-contact" style={{ '--contact-image': `url("${heroImageSmall}")` }}>
           <div className="shell">
             <p className="woodland-contact-title">Tell us about <em>your project.</em></p>
             <a className="button primary" href="#estimator">Request an estimate <span aria-hidden="true">↗</span></a>
