@@ -19,14 +19,15 @@ The November 10, 2026 workspace review is reflected below. See [PROJECT_STATUS.m
 * [ ] Modernize 20th-century tree logo into a crisp 2026 vector/SVG concept
   * In progress. The earlier inline SVG remains in `ATSLogo.jsx`. The selected ATS-05 concept is currently a PNG. A matching standalone SVG and size and background checks are pending.
 * [ ] Create the first Git commit and verify the baseline on GitHub (`ATS-01.9`)
-  * Local multi-theme baseline `663fb75` and separate woodland commit `02c0108` are present. The GitHub connector reported zero branches on November 10, 2026. Publishing the refs and confirming their SHAs on GitHub remain open.
+  * The local branch tips are `38732ed` for multi-theme and `02c0108` for woodland. GitHub reported zero branches on November 10, 2026. Publishing the refs and confirming their SHAs on GitHub remain open.
 * [ ] Build the switchable Rugged Pro, Eco-Clean, and Emergency themes and verify the contact flow locally
   * In review. The portal now uses one continuous page with seven jump links. Rugged Pro has a thicker oak and scroll-driven squirrel. The About section uses the cropped original group photo and the company's service commitment. Chrome verified section jumps, service selection in the estimator, mobile width, and the root reveal. The Maps overlay is paused and the coverage diagram is marked “Enhancements coming soon.” Confirm commercial plan terms and carrier partnerships before publication.
   * The Services section includes ten detailed popups, 21 related article previews, and relevant project photos. Chrome verified mobile layout, focus return, source links, all ten estimator handoffs, and the emergency call action.
   * The separate woodland preview on `codex/ats-v0.7` is at `02c0108`. Its committed `design-qa.md` records Chromium checks for desktop and mobile layouts, ten service-to-estimator handoffs, demo submission, gallery and FAQ controls, and Light, Dark, and System appearance behavior. Client review, a hosted URL, and live lead and photo submission remain open.
   * `ATS-01.10` readiness review checked both production builds at 320, 390, 768, 1024, and 1440 CSS pixels. All section links, unit help, annual plan, and an FAQ worked at 390px. Multi-theme navigation requires sideways scrolling on phones and at 768px. Live reviews, physical-device checks, and any required admin or checkout functionality remain open.
+  * The final branch check confirmed the three-theme switcher, plot estimator, expandable one-time, monthly, and annual sample plans with a 15% annual discount, insurance guidance, FAQs, and the Shoals radius diagram. The fallback testimonial matches the review published by ATS. Live Google review cards still require the configured Places credentials and an end-to-end check.
 * [ ] Deploy multi-theme React prototype (Rugged Pro, Eco-Clean, Emergency) (`ATS-01.4`)
-  * The Replit workspace search found no matching app. The runbook includes branch-specific import and Static deployment settings. Import, publish, and verify the client URLs.
+  * Two Replit import archives were prepared and checked for the app entry files. The archives are `ats-multi-theme-38732ed.zip` and `ats-woodland-v07-02c0108.zip`. Import, publish, and verify the client URLs using the Static deployment settings in [DEPLOYMENT.md](DEPLOYMENT.md).
 * [ ] Present the prototype for feedback
 
 ## Phase 2: Client Conversion & Contract (Billable Setup)

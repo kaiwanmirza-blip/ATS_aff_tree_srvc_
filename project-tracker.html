@@ -180,19 +180,19 @@
       },
       {
         id: 'ATS-01.9', phase: 1, title: 'Commit and verify the GitHub baseline', status: 'In progress', priority: 'High',
-        dependencies: ['ATS-01.6', 'ATS-01.7', 'ATS-01.8'], evidence: 'The local multi-theme baseline is 663fb75 and the separate woodland commit is 02c0108. GitHub reported zero remote branches on November 10, 2026. Publishing both refs and verifying their SHAs remain open.',
+        dependencies: ['ATS-01.6', 'ATS-01.7', 'ATS-01.8'], evidence: 'The local branch tips are 38732ed for multi-theme and 02c0108 for woodland. GitHub reported zero branches on November 10, 2026. Publishing both refs and verifying their SHAs remain open.',
         scope: 'Capture the current source and planning files in a reproducible Git baseline.',
         criteria: ['Review the files to include and create the first commit.', 'Verify the branch and commit on GitHub and record the commit link.'],
       },
       {
         id: 'ATS-01.10', phase: 1, title: 'Build and test the three prototype themes locally', status: 'In review', priority: 'High',
         dependencies: ['ATS-01.11'], evidence: 'Both production builds fit 320, 390, 768, 1024, and 1440 CSS pixels in Chromium. At 390px all seven links, unit help, annual plan, and an FAQ worked. Rugged Pro, Emergency Rapid, five Eco-Clean scenes, and woodland Light, Dark, and System worked. Multi-theme navigation scrolls sideways at narrow widths. Live Google review controls, physical-device checks, and live lead and photo submission remain open. The woodland branch has additional evidence in design-qa.md.',
-        scope: 'Implement Rugged Pro, Eco-Clean, and Emergency with a working theme selector and a primary contact action.',
-        criteria: ['Switch themes and Eco-Clean scenes in the local preview.', 'Check the continuous layout, seven section links, and primary contact action on mobile and desktop.', 'Verify the coverage diagram and enhancements watermark while Maps is paused.', 'Confirm billing terms and business claims before presenting them as approved.'],
+        scope: 'Deliver Rugged Pro, Eco-Clean, and Emergency Rapid with theme switching, a plot estimator, expandable one-time, monthly, and annual sample plans, insurance guidance, FAQs, and the Shoals radius diagram.',
+        criteria: ['Switch themes and Eco-Clean scenes in the local preview.', 'Check the seven section links, estimator, and expandable plans with a 15% annual sample discount.', 'Verify the Shoals coverage diagram and the ATS-published fallback testimonial. Test live review cards with the configured Places credentials.', 'Confirm billing terms and business claims before presenting them as approved.'],
       },
       {
         id: 'ATS-01.4', phase: 1, title: 'Deploy the three-theme React prototype', status: 'Backlog', priority: 'High',
-        dependencies: ['ATS-01.10', 'ATS-01.12'], evidence: 'Both local production builds passed. The Replit search found no matching app. DEPLOYMENT.md documents separate imports and Static publishing with dist. Import, publish, and verify each client URL.',
+        dependencies: ['ATS-01.10', 'ATS-01.12'], evidence: 'Both local production builds passed. The Replit import archives ats-multi-theme-38732ed.zip and ats-woodland-v07-02c0108.zip were prepared and checked for app entry files. DEPLOYMENT.md documents Static publishing with dist. Import, publish, and verify each client URL.',
         scope: 'Publish a shareable demo with Rugged Pro, Eco-Clean, and Emergency themes.',
         criteria: ['Record the deployed build and a working preview URL.', 'Verify theme switching and the primary contact action on the hosted preview.'],
       },
