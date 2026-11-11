@@ -1,0 +1,400 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Project Tracker | Affordable Tree Service INC</title>
+  <style>
+    :root {
+      color-scheme: light;
+      font-family: "Inter", "Segoe UI", sans-serif;
+      color: #192b24;
+      background: #f5f5ef;
+      --muted: #526259;
+      --line: #d8dfd6;
+      --green: #205b43;
+      --paper: #fffefa;
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; }
+    button, input, select, textarea { font: inherit; }
+    button { cursor: pointer; }
+    :focus-visible { outline: 3px solid #347559; outline-offset: 3px; }
+    .wrap { max-width: 1500px; margin: auto; padding-inline: clamp(16px, 4vw, 64px); }
+    header { background: #172e25; color: #fff; }
+    .masthead { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; padding-block: 22px; border-bottom: 1px solid #ffffff2c; }
+    .brand { font-size: .9rem; font-weight: 700; letter-spacing: .04em; }
+    .masthead a { color: #d6e9d8; font-size: .85rem; }
+    .hero { display: flex; align-items: end; justify-content: space-between; flex-wrap: wrap; gap: 20px; padding-block: 38px; }
+    h1 { margin: 0 0 10px; font-family: "Baskervville", Georgia, serif; font-weight: 400; font-size: clamp(2.5rem, 6vw, 4.2rem); line-height: 1; }
+    .hero p { margin: 0; color: #d6e9d8; }
+    .progress { min-width: min(100%, 235px); }
+    .progress strong { display: block; font-size: 1.2rem; }
+    progress { width: 100%; height: 8px; accent-color: #a5d8a8; }
+    main { padding-block: 28px 50px; }
+    h2 { font-size: 1.35rem; margin: 0 0 14px; }
+    .phases { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; margin-bottom: 30px; }
+    .phase, .card { display: block; text-align: left; width: 100%; background: var(--paper); border: 1px solid var(--line); border-radius: 10px; padding: 14px; color: inherit; }
+    .phase:hover, .card:hover { border-color: var(--green); }
+    .phase[aria-pressed="true"] { border-color: var(--green); background: #e8f2e7; }
+    .phase strong, .card strong { display: block; margin-block: 7px; }
+    .phase small, .card small, .subtle { color: var(--muted); }
+    .toolbar { display: flex; align-items: end; justify-content: space-between; flex-wrap: wrap; gap: 12px; margin-bottom: 10px; }
+    .filters { display: flex; flex-wrap: wrap; gap: 10px; }
+    label { display: grid; gap: 5px; font-size: .85rem; font-weight: 600; }
+    input, select, textarea { padding: 8px 10px; border: 1px solid #aab8ad; border-radius: 6px; background: var(--paper); color: inherit; max-width: 100%; }
+    .subtle { font-size: .85rem; }
+    .board { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 10px; align-items: start; }
+    .lane { background: #ebeee7; border-radius: 10px; padding: 10px; min-width: 0; }
+    .lane h3 { display: flex; justify-content: space-between; align-items: baseline; gap: 6px; font-size: .9rem; margin: 4px 2px 12px; }
+    .lane h3 span { color: var(--muted); font-weight: 400; }
+    .lane .card + .card { margin-top: 8px; }
+    .card strong { font-size: .92rem; line-height: 1.35; overflow-wrap: anywhere; }
+    .card span { color: var(--green); font-size: .75rem; font-weight: 700; }
+    .card small { display: block; font-size: .76rem; }
+    dialog { color: inherit; background: var(--paper); border: 1px solid var(--line); border-radius: 14px; width: min(600px, calc(100% - 28px)); max-height: 90vh; padding: clamp(16px, 4vw, 28px); }
+    dialog::backdrop { background: #12261fd0; }
+    .dialog-top { display: flex; align-items: start; justify-content: space-between; gap: 14px; }
+    .dialog-top p { margin: 0 0 5px; }
+    .dialog-top h2 { margin-bottom: 8px; }
+    dl { display: grid; grid-template-columns: max-content 1fr; gap: 8px 14px; font-size: .9rem; }
+    dt { font-weight: 700; }
+    dd { margin: 0; overflow-wrap: anywhere; }
+    dialog h3 { font-size: 1rem; margin-bottom: 6px; }
+    dialog ul { padding-left: 20px; margin-top: 6px; }
+    dialog li { margin-bottom: 6px; }
+    .edit { display: grid; gap: 12px; border-top: 1px solid var(--line); padding-top: 16px; margin-top: 20px; }
+    textarea { min-height: 88px; resize: vertical; }
+    .action, .close { width: fit-content; padding: 8px 12px; border-radius: 6px; border: 1px solid var(--green); }
+    .action { background: var(--green); color: white; }
+    .close { background: var(--paper); color: var(--green); }
+    @media (max-width: 1050px) { .board { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+    @media (max-width: 680px) { .phases, .board { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+    @media (max-width: 400px) { .board { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="wrap">
+      <div class="masthead"><span class="brand">Affordable Tree Service INC</span><a href="ROADMAP.md">Repository roadmap</a></div>
+      <div class="hero">
+        <div><h1>Project tracker</h1><p>Current milestone · Free Hook Prototype &amp; Branding</p></div>
+        <div class="progress"><strong id="completion"></strong><progress id="progress" aria-label="Project completion"></progress></div>
+      </div>
+    </div>
+  </header>
+  <main class="wrap">
+    <section aria-labelledby="roadmap-heading">
+      <h2 id="roadmap-heading">Delivery roadmap</h2>
+      <div class="phases" id="phases"></div>
+    </section>
+    <section aria-labelledby="board-heading">
+      <div class="toolbar">
+        <h2 id="board-heading">Kanban board</h2>
+        <div class="filters">
+          <label>Search tasks <input id="search" type="search" placeholder="Title, ID or keyword"></label>
+          <label>Phase <select id="phase"><option value="">All phases</option></select></label>
+        </div>
+      </div>
+      <p class="subtle" id="board-summary" role="status"></p>
+      <div class="board" id="board"></div>
+      <p class="subtle" id="storage-note">Status and work notes are saved in this browser. The repository roadmap is a separate file.</p>
+      <noscript>Enable JavaScript to view the board and edit tasks.</noscript>
+    </section>
+  </main>
+  <dialog id="task" aria-labelledby="task-title">
+    <div class="dialog-top">
+      <div><p class="subtle" id="task-id"></p><h2 id="task-title"></h2></div>
+      <form method="dialog"><button class="close" type="submit">Close</button></form>
+    </div>
+    <p id="task-scope"></p>
+    <dl>
+      <dt>Priority</dt><dd id="task-priority"></dd>
+      <dt>Dependencies</dt><dd id="task-dependencies"></dd>
+      <dt>Baseline evidence</dt><dd id="task-evidence"></dd>
+    </dl>
+    <h3>Acceptance criteria</h3>
+    <ul id="criteria"></ul>
+    <form class="edit" id="task-edit">
+      <label>Status <select id="task-status"></select></label>
+      <label>Work notes and evidence <textarea id="task-note" placeholder="Record decisions, blockers, or links to completed work."></textarea></label>
+      <button class="action" type="submit">Save changes</button>
+    </form>
+  </dialog>
+  <script>
+    const phases = [
+      { title: 'Free Hook Prototype & Branding', stage: 'Current milestone' },
+      { title: 'Client Conversion & Contract', stage: 'Billable setup' },
+      { title: 'Production Build & Backend Integration', stage: 'Billable build' },
+      { title: 'Automation & Handoff', stage: 'Launch and training' },
+    ];
+
+    const tasks = [
+      {
+        id: 'ATS-01.6', phase: 1, title: 'Collect branding, business, and photo references', status: 'Done', priority: 'Normal',
+        dependencies: [], evidence: 'img_ref/ contains Facebook branding and business screenshots and the original About Us group photo. Gallery_ATS/ contains 57 photos, including before/after images.',
+        scope: 'Keep source images available for logo review, website content, and future social asset work.',
+        criteria: ['Save the original branding images, Facebook business references, and project gallery photos in img_ref/.'],
+      },
+      {
+        id: 'ATS-01.1', phase: 1, title: 'Initialize Git and configure the origin URL', status: 'Done', priority: 'High',
+        dependencies: [], evidence: 'The local repository exists and origin is configured for ATS_aff_tree_srvc_. GitHub publication is tracked in ATS-01.9.',
+        scope: 'Set up local version control and record the intended GitHub destination.',
+        criteria: ['A local Git repository exists.', 'Origin points to the intended GitHub repository.'],
+      },
+      {
+        id: 'ATS-01.2', phase: 1, title: 'Scaffold the local project structure', status: 'Done', priority: 'High',
+        dependencies: ['ATS-01.1'], evidence: 'The requested directories were verified in the working copy.',
+        scope: 'Create the initial homes for React components, themes, shared helpers, and backend files.',
+        criteria: ['The workspace contains src/components, src/themes, src/lib, and supabase.'],
+      },
+      {
+        id: 'ATS-01.7', phase: 1, title: 'Build and compile the local logo preview', status: 'Done', priority: 'High',
+        dependencies: ['ATS-01.2'], evidence: 'The earlier standalone logo preview was built successfully. Its source files were removed from the working tree after index.html switched to the multi-theme app through src/main.jsx.',
+        scope: 'Set up a React, Vite, and Tailwind entry point for inspecting the SVG concept locally.',
+        criteria: ['The React entry point renders the SVG component.', 'The Vite build produces an HTML entry point and bundled JS and CSS.'],
+      },
+      {
+        id: 'ATS-01.8', phase: 1, title: 'Create the roadmap and offline project tracker', status: 'Done', priority: 'Normal',
+        dependencies: [], evidence: 'ROADMAP.md and project-tracker.html are present. The HTML bundles its styles, task data, and scripts. AGENTS.md records how future project work updates both files.',
+        scope: 'Track the four delivery phases from a standalone browser file alongside the repository checklist.',
+        criteria: ['The roadmap links to the offline tracker.', 'The tracker has a phase filter, Kanban status lanes, task details, and browser-local notes.'],
+      },
+      {
+        id: 'ATS-01.11', phase: 1, title: 'Integrate the selected ATS-05 logo into the preview', status: 'Done', priority: 'High',
+        dependencies: ['ATS-01.6', 'ATS-01.7'], evidence: 'PROJECT_STATUS.md records the ATS-05 selection. The earlier standalone preview used the 1254 × 1254 PNG. The active app uses the derived ATS-05-mark.jpg in its header, and the fresh build bundles that JPEG.',
+        scope: 'Show the selected ATS-05 concept in the active local React preview.',
+        criteria: ['The active React app displays ATS-05 branding.', 'The Vite build bundles the active logo asset.'],
+      },
+      {
+        id: 'ATS-01.12', phase: 1, title: 'Prepare Vercel and Netlify preview configuration', status: 'Done', priority: 'Normal',
+        dependencies: ['ATS-01.7'], evidence: 'vercel.json and netlify.toml configure the Vite build and dist output. .nvmrc specifies Node 24. DEPLOYMENT.md documents both preview deployment workflows.',
+        scope: 'Prepare the current multi-theme prototype for deployment from a local checkout.',
+        criteria: ['Both host configuration files target the Vite build output.', 'The deployment guide records the local checks and preview commands.'],
+      },
+      {
+        id: 'ATS-01.3', phase: 1, title: 'Finish the selected logo as a reusable SVG', status: 'In progress', priority: 'High',
+        dependencies: ['ATS-01.11'], evidence: 'The selected ATS-05 is available as a PNG and a compact JPEG. src/components/ATSLogo.jsx retains the earlier inline SVG with default and emergency color options. A standalone SVG matching ATS-05 was not found.',
+        scope: 'Create the reusable vector version of the selected ATS-05 concept.',
+        criteria: ['Export a standalone SVG matching the selected concept.', 'Verify legibility at favicon and header sizes on light and dark surfaces.', 'Record the approved export.'],
+      },
+      {
+        id: 'ATS-01.9', phase: 1, title: 'Commit and verify the GitHub baseline', status: 'Backlog', priority: 'High',
+        dependencies: ['ATS-01.6', 'ATS-01.7', 'ATS-01.8'], evidence: 'The local baseline on feature/multi-theme-prototype includes the current portal, gallery assets, and hosting configuration. Verification on GitHub is pending.',
+        scope: 'Capture the current source and planning files in a reproducible Git baseline.',
+        criteria: ['Review the files to include and create the first commit.', 'Verify the branch and commit on GitHub and record the commit link.'],
+      },
+      {
+        id: 'ATS-01.10', phase: 1, title: 'Build and test the three prototype themes locally', status: 'In review', priority: 'High',
+        dependencies: ['ATS-01.11'], evidence: 'The continuous portal has seven section links, a scroll-driven squirrel, and a cropped original About photo. Services now has ten detailed popups, 21 article previews, and relevant gallery photos. Chrome verified the mobile popup layout, focus return, source links, all estimator handoffs, and the emergency call action. The Maps overlay remains paused.',
+        scope: 'Implement Rugged Pro, Eco-Clean, and Emergency with a working theme selector and a primary contact action.',
+        criteria: ['Switch themes and Eco-Clean scenes in the local preview.', 'Check the continuous layout, seven section links, and primary contact action on mobile and desktop.', 'Verify the coverage diagram and enhancements watermark while Maps is paused.', 'Confirm billing terms and business claims before presenting them as approved.'],
+      },
+      {
+        id: 'ATS-01.4', phase: 1, title: 'Deploy the three-theme React prototype', status: 'Backlog', priority: 'High',
+        dependencies: ['ATS-01.10', 'ATS-01.12'], evidence: 'A fresh production build passed for the continuous-page portal. Vercel and Netlify target the build output. A hosted URL for the demo has yet to be verified.',
+        scope: 'Publish a shareable demo with Rugged Pro, Eco-Clean, and Emergency themes.',
+        criteria: ['Record the deployed build and a working preview URL.', 'Verify theme switching and the primary contact action on the hosted preview.'],
+      },
+      {
+        id: 'ATS-01.5', phase: 1, title: 'Present the prototype for feedback', status: 'Backlog', priority: 'High',
+        dependencies: ['ATS-01.4'], evidence: 'Presentation pending in the roadmap.',
+        scope: 'Walk through the three visual directions and the proposed customer journey.',
+        criteria: ['Demonstrate the three themes and contact path.', 'Record initial reactions and agree on a follow-up.'],
+      },
+      {
+        id: 'ATS-02.1', phase: 2, title: 'Hold the client feedback session', status: 'Backlog', priority: 'High',
+        dependencies: ['ATS-01.5'], evidence: 'Feedback session pending in the roadmap.',
+        scope: 'Turn prototype feedback into a set of client decisions for the paid build.',
+        criteria: ['Record the preferred theme, service priorities, and requested changes.', 'Capture outstanding decisions and who will resolve them.'],
+      },
+      {
+        id: 'ATS-02.2', phase: 2, title: 'Finalize the scope, agreement, and fee', status: 'Backlog', priority: 'High',
+        dependencies: ['ATS-02.1'], evidence: 'Agreement and fee pending in the roadmap.',
+        scope: 'Confirm deliverables, milestones, approvals, and the retainer or project fee.',
+        criteria: ['Record client approval of the scope, fee, payment milestones, and sign-off process.', 'Identify which accounts and assets the client will provide.'],
+      },
+      {
+        id: 'ATS-02.3', phase: 2, title: 'Register the domain and configure DNS', status: 'Backlog', priority: 'Normal',
+        dependencies: ['ATS-02.2'], evidence: 'affordableserviceal.com is a candidate. Availability and DNS setup are unverified.',
+        scope: 'Confirm the domain choice and account ownership, then prepare DNS for the website.',
+        criteria: ['Record the approved, registered domain and account owner.', 'Verify the required DNS records and document the production cutover plan.'],
+      },
+      {
+        id: 'ATS-03.5', phase: 3, title: 'Prepare the local Supabase client and lead migration', status: 'Done', priority: 'High',
+        dependencies: [], evidence: 'src/lib/supabase.js, .env.example, and supabase/README.md are present. The starter migration defines leads, lead status logs, and a private lead-photos bucket.',
+        scope: 'Prepare the local backend files and setup instructions for lead intake.',
+        criteria: ['A shared client reads the documented browser configuration.', 'A starter SQL migration defines lead and status log tables and private photo storage.'],
+      },
+      {
+        id: 'ATS-03.1', phase: 3, title: 'Set up Supabase for leads, photos, and scheduling', status: 'In progress', priority: 'High',
+        dependencies: ['ATS-02.2', 'ATS-03.5'], evidence: 'The local migration defines lead status history and insert-only visitor access. Migration application, deployed access behavior, and appointment scheduling have yet to be verified.',
+        scope: 'Apply and validate the backend for leads, private photos, and scheduling.',
+        criteria: ['Apply the starter migration in the intended project and record the result.', 'Test lead creation, status history, and authorized photo upload and retrieval with sample records.', 'Add and verify persistence for appointments and scheduling outcomes.'],
+      },
+      {
+        id: 'ATS-03.2', phase: 3, title: 'Integrate the plot estimator and photo upload', status: 'In progress', priority: 'High',
+        dependencies: ['ATS-03.1'], evidence: 'App.jsx implements a feet/meters plot-area calculator, service selection, optional photo validation, and demo submission. Configured builds have lead insert and private photo upload code with a same-lead retry. Live Supabase behavior has yet to be verified.',
+        scope: 'Let prospective customers submit property details and photos with an estimate request.',
+        criteria: ['Confirm the estimator inputs and calculation rules with the client.', 'Test a complete mobile submission with photos attached to the correct lead.', 'Verify clear feedback for unsupported files, validation failures, and retries.'],
+      },
+      {
+        id: 'ATS-03.3', phase: 3, title: 'Create social media asset packs', status: 'Backlog', priority: 'Normal',
+        dependencies: ['ATS-02.2', 'ATS-01.3'], evidence: 'Facebook business screenshots and the expanded 57-photo website gallery are available as reference material. Finished asset packs are unverified.',
+        scope: 'Prepare reusable Facebook, Instagram Reels and grid, and Pinterest assets.',
+        criteria: ['Review Facebook profile and cover assets, Instagram templates, and Pinterest board concepts with the client.', 'Deliver editable files and ready-to-use exports.'],
+      },
+      {
+        id: 'ATS-03.4', phase: 3, title: 'Optimize local SEO for the Shoals area', status: 'Backlog', priority: 'Normal',
+        dependencies: ['ATS-02.2'], evidence: 'The prototype includes Shoals coverage content, review links, and optional Google review cards. Live review cards and Google Business Profile changes remain unverified.',
+        scope: 'Confirm the business service area and align the website and Google Business Profile details.',
+        criteria: ['Confirm the Shoals-area cities served and the client-approved business details.', 'Review the profile categories, services, and contact details.', 'Record approved or published changes and any remaining verification steps.'],
+      },
+      {
+        id: 'ATS-04.1', phase: 4, title: 'Set up AI intake and calendar scheduling', status: 'Backlog', priority: 'High',
+        dependencies: ['ATS-03.1', 'ATS-03.2'], evidence: 'The starter SQL records lead status changes. Email and DM intake, calendar booking, and staff dispatch workflows remain pending.',
+        scope: 'Handle approved email and DM intake scenarios and log scheduling outcomes.',
+        criteria: ['Confirm which channels, replies, and booking actions the client authorizes.', 'Test a sample inquiry, a calendar conflict, and a handoff to a person.', 'Verify the inquiry and scheduling outcome appear in the intake log.'],
+      },
+      {
+        id: 'ATS-04.2', phase: 4, title: 'Deploy the production site', status: 'Backlog', priority: 'High',
+        dependencies: ['ATS-02.3', 'ATS-03.2', 'ATS-04.1'], evidence: 'Local Vercel and Netlify configuration builds the multi-theme prototype. A deployed production site and custom domain have yet to be verified.',
+        scope: 'Publish the production build to the approved host and domain.',
+        criteria: ['Verify HTTPS and DNS on the production domain.', 'Test the primary contact path, lead submission, and photo upload in production.', 'Record deployment and rollback instructions.'],
+      },
+      {
+        id: 'ATS-04.3', phase: 4, title: 'Train the client and hand over the project', status: 'Backlog', priority: 'High',
+        dependencies: ['ATS-03.3', 'ATS-03.4', 'ATS-04.2'], evidence: 'Client training and handover pending in the roadmap.',
+        scope: 'Transfer day-to-day ownership of the site, leads, schedule, and social assets.',
+        criteria: ['Review the intake and scheduling workflow with the client.', 'Deliver account access, asset files, and operating instructions.', 'Record client sign-off and any remaining support items.'],
+      },
+    ];
+
+    const statuses = ['Backlog', 'In progress', 'In review', 'Blocked', 'Done'];
+    const storageKey = 'ats-project-tracker-v1';
+    const byId = (id) => document.getElementById(id);
+    const phaseFilter = byId('phase');
+    const search = byId('search');
+    const dialog = byId('task');
+    const statusField = byId('task-status');
+    const noteField = byId('task-note');
+    let edits = {};
+    let activeTask;
+    let activeCard;
+
+    try {
+      const saved = JSON.parse(localStorage.getItem(storageKey) ?? '{}');
+      if (saved && typeof saved === 'object' && !Array.isArray(saved)) edits = saved;
+    } catch {
+      byId('storage-note').textContent = 'Browser storage could not be read. The board is showing its baseline.';
+    }
+
+    const currentStatus = (task) => statuses.includes(edits[task.id]?.status) ? edits[task.id].status : task.status;
+
+    function element(tag, value, className) {
+      const node = document.createElement(tag);
+      node.textContent = value;
+      if (className) node.className = className;
+      return node;
+    }
+
+    phases.forEach((phase, index) => phaseFilter.add(new Option(`Phase ${index + 1} · ${phase.title}`, index + 1)));
+    statuses.forEach((status) => statusField.add(new Option(status, status)));
+
+    function renderPhases() {
+      byId('phases').replaceChildren(...phases.map((phase, index) => {
+        const phaseId = String(index + 1);
+        const phaseTasks = tasks.filter((task) => task.phase === index + 1);
+        const done = phaseTasks.filter((task) => currentStatus(task) === 'Done').length;
+        const button = element('button', '', 'phase');
+        button.type = 'button';
+        button.dataset.phase = phaseId;
+        button.setAttribute('aria-pressed', String(phaseFilter.value === phaseId));
+        button.append(
+          element('small', `Phase ${phaseId} · ${phase.stage}`),
+          element('strong', phase.title),
+          element('small', `${done} of ${phaseTasks.length} complete`),
+        );
+        button.addEventListener('click', () => {
+          phaseFilter.value = phaseFilter.value === phaseId ? '' : phaseId;
+          render();
+          byId('phases').querySelector(`[data-phase="${phaseId}"]`).focus();
+        });
+        return button;
+      }));
+    }
+
+    function render() {
+      const done = tasks.filter((task) => currentStatus(task) === 'Done').length;
+      byId('completion').textContent = `${done} of ${tasks.length} tasks complete`;
+      byId('progress').max = tasks.length;
+      byId('progress').value = done;
+      renderPhases();
+
+      const query = search.value.trim().toLowerCase();
+      const visible = tasks.filter((task) => {
+        const inPhase = !phaseFilter.value || Number(phaseFilter.value) === task.phase;
+        const searchable = [task.id, task.title, task.scope, task.evidence, ...task.criteria, edits[task.id]?.note];
+        return inPhase && searchable.join(' ').toLowerCase().includes(query);
+      });
+      byId('board-summary').textContent = `${visible.length} of ${tasks.length} tasks shown`;
+      byId('board').replaceChildren(...statuses.map((status) => {
+        const lane = element('section', '', 'lane');
+        const matches = visible.filter((task) => currentStatus(task) === status);
+        const heading = element('h3', status);
+        heading.append(element('span', String(matches.length)));
+        lane.append(heading);
+        if (!matches.length) lane.append(element('p', 'No tasks', 'subtle'));
+        for (const task of matches) {
+          const card = element('button', '', 'card');
+          card.type = 'button';
+          card.dataset.task = task.id;
+          card.setAttribute('aria-haspopup', 'dialog');
+          card.append(element('span', task.id), element('strong', task.title), element('small', `Phase ${task.phase} · ${task.priority} priority`));
+          card.addEventListener('click', () => openTask(task, card));
+          lane.append(card);
+        }
+        return lane;
+      }));
+    }
+
+    function openTask(task, card) {
+      activeTask = task;
+      activeCard = card;
+      byId('task-id').textContent = `${task.id} · Phase ${task.phase}`;
+      byId('task-title').textContent = task.title;
+      byId('task-scope').textContent = task.scope;
+      byId('task-priority').textContent = task.priority;
+      byId('task-dependencies').textContent = task.dependencies.map((id) => {
+        const dependency = tasks.find((item) => item.id === id);
+        return `${id} · ${dependency.title} (${currentStatus(dependency)})`;
+      }).join(' / ') || 'None';
+      byId('task-evidence').textContent = task.evidence;
+      byId('criteria').replaceChildren(...task.criteria.map((criterion) => element('li', criterion)));
+      statusField.value = currentStatus(task);
+      noteField.value = edits[task.id]?.note ?? '';
+      dialog.showModal();
+    }
+
+    byId('task-edit').addEventListener('submit', (event) => {
+      event.preventDefault();
+      edits[activeTask.id] = { status: statusField.value, note: noteField.value.trim() };
+      try {
+        localStorage.setItem(storageKey, JSON.stringify(edits));
+        byId('storage-note').textContent = 'Changes saved in this browser.';
+      } catch {
+        byId('storage-note').textContent = 'Browser storage is unavailable. Changes will last until you close or reload this page.';
+      }
+      render();
+      dialog.close();
+    });
+    dialog.addEventListener('close', () => {
+      const card = document.querySelector(`[data-task="${activeTask.id}"]`);
+      (card ?? (activeCard.isConnected ? activeCard : search)).focus();
+    });
+    phaseFilter.addEventListener('change', render);
+    search.addEventListener('input', render);
+    render();
+  </script>
+</body>
+</html>
