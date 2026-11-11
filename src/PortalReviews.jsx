@@ -20,15 +20,15 @@ function Gallery() {
 
   return (
     <section className="gallery" aria-labelledby="gallery-title">
-      <div className="gallery-heading"><h3 id="gallery-title">Project gallery</h3><span>{gallery.length} photos</span></div>
-      <div className="gallery-controls">
-        <button type="button" className="button secondary" onClick={() => cards.current.scrollBy({ left: -350 })}>← Earlier photos</button>
-        <button type="button" className="button secondary" onClick={() => cards.current.scrollBy({ left: 350 })}>More photos →</button>
-      </div>
+      <div className="gallery-heading"><h3 id="gallery-title">Project <em>gallery</em></h3><span>{gallery.length} photos</span></div>
       <div className="gallery-stack" ref={cards}>
         {gallery.map(({ url, label }, index) => <button className="gallery-card" type="button" key={url} onClick={() => { setSelected(index); dialog.current.showModal(); }}>
           <img src={url} alt="" loading="lazy" decoding="async" /><span>{label}</span>
         </button>)}
+      </div>
+      <div className="gallery-controls">
+        <button type="button" className="button secondary" onClick={() => cards.current.scrollBy({ left: -350 })}>← Earlier photos</button>
+        <button type="button" className="button secondary" onClick={() => cards.current.scrollBy({ left: 350 })}>More photos →</button>
       </div>
       <dialog ref={dialog} className="gallery-dialog" aria-label="Project photo" onKeyDown={(event) => {
         if (event.key === 'ArrowLeft') advance(-1);

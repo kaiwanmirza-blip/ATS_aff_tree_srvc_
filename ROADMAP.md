@@ -23,6 +23,7 @@ The November 10, 2026 workspace review is reflected below. See [PROJECT_STATUS.m
 * [ ] Build the switchable Rugged Pro, Eco-Clean, and Emergency themes and verify the contact flow locally
   * In review. The portal now uses one continuous page with seven jump links. Rugged Pro has a thicker oak and scroll-driven squirrel. The About section uses the cropped original group photo and the company's service commitment. Chrome verified section jumps, service selection in the estimator, mobile width, and the root reveal. The Maps overlay is paused and the coverage diagram is marked “Enhancements coming soon.” Confirm commercial plan terms and carrier partnerships before publication.
   * The Services section includes ten detailed popups, 21 related article previews, and relevant project photos. Chrome verified mobile layout, focus return, source links, all ten estimator handoffs, and the emergency call action.
+  * ATS-01.10 includes a separate v0.7 preview on `codex/ats-v0.7`. The woodland theme restyles the existing ATS content, service dialogs, estimator, gallery, and FAQ. The production build passed, and Chromium verified all ten estimator handoffs, demo submission, gallery and FAQ controls, and desktop and mobile layout. Client review, hosted preview, and live lead and photo submission are pending. See [design-qa.md](design-qa.md).
 * [ ] Deploy multi-theme React prototype (Rugged Pro, Eco-Clean, Emergency)
   * A fresh production build passed for the continuous-page portal. A hosted preview remains unverified.
 * [ ] Present the prototype for feedback

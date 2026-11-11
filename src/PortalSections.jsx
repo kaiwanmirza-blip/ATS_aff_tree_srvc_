@@ -100,16 +100,24 @@ export function Services({ requestService, emergency }) {
 
   return <section id="services" className="shell page-section info-page services-page">
     <p className="eyebrow"><span aria-hidden="true" /> Tree and land services</p>
-    <h2>Find the right service</h2>
+    <h2>Find the <em>right service</em></h2>
     <div className="service-grid">
-      {serviceCatalog.map((service) => <article className="service-card service-guide" key={service.slug}>
-        <h3>{service.name}</h3>
-        <p>{service.summary}</p>
-        <button type="button" className="service-open" aria-haspopup="dialog" aria-label={`Explore ${service.name}`} onClick={(event) => {
-          opener.current = event.currentTarget;
-          setSelected(service);
-        }}>Explore service <span aria-hidden="true">↗</span></button>
-      </article>)}
+      {serviceCatalog.map((service) => {
+        const photo = serviceResearch[service.slug].photos?.[0];
+        return (
+          <article className="service-card service-guide" key={service.slug}>
+            {photo && <img className="service-cover" src={photo.src} alt="" loading="lazy" decoding="async" />}
+            <div className="service-guide-copy">
+              <h3>{service.name}</h3>
+              <p>{service.summary}</p>
+              <button type="button" className="service-open" aria-haspopup="dialog" aria-label={`Explore ${service.name}`} onClick={(event) => {
+                opener.current = event.currentTarget;
+                setSelected(service);
+              }}>Explore service <span aria-hidden="true">↗</span></button>
+            </div>
+          </article>
+        );
+      })}
     </div>
     <dialog className="service-dialog" ref={dialog} aria-labelledby="service-dialog-title" onClose={() => {
       setSelected(null);
@@ -175,7 +183,7 @@ export function Claims({ office, emergency }) {
 }
 
 export function Faqs() {
-  return <section id="faqs" className="shell page-section info-page"><h2>Frequently asked questions</h2>
+  return <section id="faqs" className="shell page-section info-page"><h2>Frequently asked <em>questions</em></h2>
     <div className="faq-list">{questions.map(([question, answer]) => <details className="service-card" key={question}><summary>{question}</summary><p>{answer}</p></details>)}</div>
     <a className="button secondary" href="https://www.byebyetree.com/faqs">More FAQs from ATS ↗</a>
   </section>;

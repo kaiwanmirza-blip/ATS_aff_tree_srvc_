@@ -6,8 +6,8 @@ import ServiceCoverage, { serviceCities } from './ServiceCoverage.jsx';
 import StormBanner from './StormBanner.jsx';
 import PortalReviews from './PortalReviews.jsx';
 import { Claims, Faqs, Services, serviceCatalog } from './PortalSections.jsx';
-import { EcoScenery, seasons } from './PortalScenery.jsx';
-import RuggedTree from './RuggedTree.jsx';
+import woodland from './assets/woodland-at-dusk.webp';
+import woodlandSmall from './assets/woodland-at-dusk-small.webp';
 import aboutPhoto from '../img_ref/Abt_us_needs_Cleaning.png';
 
 // Company contact and service area: https://www.byebyetree.com/contact
@@ -277,13 +277,11 @@ function EstimateForm({ service, setService }) {
 }
 
 export default function App() {
-  const [theme, setTheme] = useState('rugged');
-  const [season, setSeason] = useState('Spring');
   const [service, setService] = useState('');
   const [currentSection, setCurrentSection] = useState('home');
   const navigation = useRef(null);
-  const active = themes[theme];
-  const isEmergency = theme === 'emergency';
+  const mobileMenu = useRef(null);
+  const active = themes.rugged;
 
   useEffect(() => {
     let frame = 0;
@@ -307,72 +305,85 @@ export default function App() {
     };
   }, []);
 
+  const sectionLinks = () => sections.map(([id, label]) => (
+    <a key={id} href={`#${id}`} aria-current={currentSection === id ? 'location' : undefined}
+      onClick={() => { mobileMenu.current.open = false; }}>{label}</a>
+  ));
+
   return (
-    <div className="site portal" data-theme={theme} data-season={theme === 'eco' ? season.toLowerCase() : undefined}>
+    <div className="site portal woodland" data-theme="woodland">
+      <a className="skip-link" href="#top">Skip to content</a>
       <StormBanner emergency={emergency} />
-      <header className="site-header">
+      <header className="site-header section-navigation" ref={navigation}>
         <div className="shell header-inner">
           <a className="brand" href="#home">
-            <img src={logo} alt="" width="50" height="50" />
+            <img src={logo} alt="" width="42" height="42" />
             <span>Affordable Tree<br />Service Inc.</span>
           </a>
-          <fieldset className="theme-picker">
-            <legend className="sr-only">Site theme</legend>
-            {Object.entries(themes).map(([id, option]) => (
-              <label key={id}>
-                <input className="sr-only" type="radio" name="site-theme" value={id} checked={id === theme} onChange={() => setTheme(id)} />
-                <span>{option.label}</span>
-              </label>
-            ))}
-          </fieldset>
+          <nav className="page-nav desktop-nav" aria-label="Jump to section">{sectionLinks()}</nav>
           <PhoneLink phone={office} className="header-phone" />
+          <details ref={mobileMenu} className="mobile-nav" onKeyDown={(event) => {
+            if (event.key === 'Escape' && event.currentTarget.open) {
+              event.currentTarget.open = false;
+              event.currentTarget.querySelector('summary').focus();
+            }
+          }}>
+            <summary>Menu</summary>
+            <nav className="page-nav" aria-label="Jump to section">{sectionLinks()}</nav>
+          </details>
         </div>
-        {theme === 'eco' && <div className="shell season-picker"><label>Eco-Clean scenery <select value={season} onChange={(event) => setSeason(event.target.value)}>{seasons.map((option) => <option key={option}>{option}</option>)}</select></label></div>}
       </header>
-      <div className="section-navigation" ref={navigation}>
-        <nav className="shell page-nav" aria-label="Jump to section">
-          {sections.map(([id, label]) => <a key={id} href={`#${id}`} aria-current={currentSection === id ? 'location' : undefined}>{label}</a>)}
-        </nav>
-      </div>
-      <div className="portal-journey">
-      {theme === 'rugged' && <RuggedTree />}
-      <main id="top">
-        {theme === 'eco' && <EcoScenery season={season} />}
-        <section id="home" className="shell hero" aria-labelledby="hero-title">
-          <div className="hero-copy">
-            <p className="eyebrow"><span aria-hidden="true" /> Northwest Alabama tree service</p>
-            <h1 id="hero-title">{active.title[0]}<br /><em>{active.title[1]}</em></h1>
-            <p className="hero-description">{active.description}</p>
-            <div className="actions">
-              {isEmergency ? <PhoneLink phone={emergency} className="button primary">Call {emergency.label}</PhoneLink> : <a className="button primary" href="#estimator">Request an estimate <span aria-hidden="true">↗</span></a>}
-              {isEmergency ? <a className="button secondary" href="#estimator">Request an estimate</a> : <PhoneLink phone={office} className="button secondary">Call {office.label}</PhoneLink>}
-              <a className="button secondary" href="#services">Explore services</a>
+      <main id="top" tabIndex={-1}>
+        <section id="home" className="hero" aria-labelledby="hero-title">
+          <picture className="woodland-hero-image" aria-hidden="true">
+            <source media="(max-width: 47rem)" srcSet={woodlandSmall} />
+            <img src={woodland} alt="" width="1536" height="1024" fetchPriority="high" />
+          </picture>
+          <div className="shell woodland-hero-inner">
+            <div className="hero-copy">
+              <p className="eyebrow">Northwest Alabama tree service</p>
+              <h1 id="hero-title">{active.title[0]}<br /><em>{active.title[1]}</em></h1>
+              <p className="hero-description">{active.description}</p>
+              <div className="actions">
+                <a className="button primary" href="#estimator">Request an estimate <span aria-hidden="true">↗</span></a>
+                <PhoneLink phone={office} className="button secondary">Call {office.label}</PhoneLink>
+                <a className="woodland-text-link" href="#services">Explore services <span aria-hidden="true">↓</span></a>
+              </div>
             </div>
-          </div>
-          <div className="hero-visual">
-            <img src={heroPhoto} alt="Arborist climbing a mature oak" width="1536" height="1024" fetchPriority="high" />
-            <p className="image-caption"><span aria-hidden="true" />{active.caption}</p>
+            <p className="woodland-caption">{active.caption}</p>
           </div>
         </section>
-        <ServiceTicker />
-        <ServiceCoverage office={office} />
-        <section id="about" className="shell page-section info-page about-section">
-          <div className="about-layout">
-            <div className="about-copy">
-              <p className="eyebrow"><span aria-hidden="true" /> About us</p>
-              <h2>Tree care across Northwest Alabama</h2>
+        <section id="about" className="shell page-section info-page about-section" aria-labelledby="about-title">
+          <p className="eyebrow">About us</p>
+          <h2 id="about-title">Tree care across <em>Northwest Alabama</em></h2>
+          <div className="woodland-about-columns">
+            <div className="info-card">
               <p>Affordable Tree Service Inc. is family owned and has served Northwest Alabama for more than 20 years. The crew handles residential tree care, difficult removals, storm cleanup, and larger clearing projects.</p>
             </div>
+            <div className="info-card woodland-about-feature">
+              <img src={heroPhoto} alt="Arborist climbing a mature oak" width="1536" height="1024" loading="lazy" decoding="async" />
+              <h3>Your satisfaction is our motivation</h3>
+              <p>ATS is committed to completing each project safely, responsibly, and on time. The crew works with you to understand what needs to be removed and how to protect the surrounding property.</p>
+              <a className="about-source" href="https://www.byebyetree.com/about">Read the company’s About page ↗</a>
+            </div>
+            <div className="info-card">
+              <h3>Equipment matched to the site</h3>
+              <p>Skid steers help move brush and debris. Bucket trucks provide aerial access, and cranes can lift sections of a tree when buildings or limited access make conventional removal difficult. The crew evaluates access and nearby structures before choosing an approach.</p>
+            </div>
+          </div>
+          <div className="woodland-team">
             <figure className="about-photo">
               <img src={aboutPhoto} alt="The Affordable Tree Service family gathered in front of a brick building" width="1080" height="664" loading="lazy" decoding="async" />
             </figure>
+            <div>
+              <div className="trust-badges"><span>Licensed &amp; insured</span><span>ISA-certified arborist</span><span>24/7 emergency service</span></div>
+              <a className="button primary" href="#estimator">Request an estimate</a>
+            </div>
           </div>
-          <div className="info-card"><h3>Your satisfaction is our motivation</h3><p>ATS is committed to completing each project safely, responsibly, and on time. The crew works with you to understand what needs to be removed and how to protect the surrounding property.</p><a className="about-source" href="https://www.byebyetree.com/about">Read the company’s About page ↗</a></div>
-          <div className="info-card"><h3>Equipment matched to the site</h3><p>Skid steers help move brush and debris. Bucket trucks provide aerial access, and cranes can lift sections of a tree when buildings or limited access make conventional removal difficult. The crew evaluates access and nearby structures before choosing an approach.</p></div>
-          <div className="trust-badges"><span>Licensed &amp; insured</span><span>ISA-certified arborist</span><span>24/7 emergency service</span></div>
-          <a className="button primary" href="#estimator">Request an estimate</a>
         </section>
         <Services requestService={setService} emergency={emergency} />
+        <ServiceTicker />
+        <ServiceCoverage office={office} />
         <section id="estimator" className="estimate-section">
           <div className="shell estimate-layout">
             <div className="estimate-intro">
@@ -391,12 +402,22 @@ export default function App() {
         </section>
         <PortalReviews />
         <Claims office={office} emergency={emergency} />
+        <div className="woodland-contact">
+          <div className="shell">
+            <p className="woodland-contact-title">Tell us about <em>your project.</em></p>
+            <a className="button primary" href="#estimator">Request an estimate <span aria-hidden="true">↗</span></a>
+          </div>
+        </div>
         <Faqs />
       </main>
       <footer className="site-footer">
-        <div className="shell footer-inner"><span>Affordable Tree Service Inc.</span><span>Serving the Shoals and Northwest Alabama</span><PhoneLink phone={office} /></div>
+        <div className="shell footer-inner">
+          <a className="brand" href="#home"><img src={logo} alt="" width="52" height="52" /><span>Affordable Tree Service Inc.</span></a>
+          <span>Serving the Shoals and Northwest Alabama</span>
+          <PhoneLink phone={office} />
+          <nav aria-label="Footer">{sectionLinks()}</nav>
+        </div>
       </footer>
-      </div>
     </div>
   );
 }
