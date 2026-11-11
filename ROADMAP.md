@@ -14,6 +14,7 @@ The November 10, 2026 workspace review is reflected below. See [PROJECT_STATUS.m
 * [x] Save the project roadmap and create the offline Kanban tracker
 * [x] Integrate the selected ATS-05 logo into the local preview
   * The original logo preview used the ATS-05 PNG. The current prototype header uses a compact JPEG derived from that image.
+  * ATS-01.11: Both branches use a 32 × 32 ATS-05 PNG for the browser tab. Both production builds passed and their generated HTML references the packaged icon. Verify the tab icon on each hosted preview after deployment.
 * [x] Prepare Vercel and Netlify configuration and document the preview deployment steps
   * The configurations build the current multi-theme prototype. A hosted preview URL has yet to be verified. See [DEPLOYMENT.md](DEPLOYMENT.md).
 * [ ] Modernize 20th-century tree logo into a crisp 2026 vector/SVG concept
